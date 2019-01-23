@@ -1,0 +1,6 @@
+empid	empname	salary  
+2	Dan	515.2 
+4	Ryan	729.1 
+5	Gary	843.25 
+7	Pranab	632.8 
+8	Rasmi	722.5 

@@ -1,0 +1,5 @@
+empid	ename	salary	DOJ
+1	Rick	623.3	02/11/1998
+3	Mike	611.5	02/11/2002
+6	Tusar	578.6	02/11/2000
+8	Rasmi	722.5	02/12/2004

@@ -1,0 +1,38 @@
+
+DATA RowsData;
+	INPUT Row_type $ Marks;
+	DATALINES;
+Front 82 
+Front 83
+Front 97 
+Front 93 
+Front 55 
+Front 67 
+Front 53
+Middle 83 
+Middle 78 
+Middle 68 
+Middle 61 
+Middle 77 
+Middle 54 
+Middle 69 
+Middle 51 
+Middle 63
+Back 38 
+Back 59 
+Back 55 
+Back 66 
+Back 45 
+Back 52 
+Back 52 
+Back 61
+;
+Run;
+;
+PROC PRINT DATA = MATH;
+
+PROC ANOVA DATA= MATH;
+	CLASS Row_type;
+	MODEL Marks = Row_type;
+RUN;
+  

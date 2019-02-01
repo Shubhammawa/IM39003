@@ -1,0 +1,44 @@
+/* Shubham Mawa
+   16IM10033 */
+
+
+/* Fibonacci sequence */
+
+Libname mylib1 'E:\16IM10033\OHM_Lab_16IM10033\Lab4';
+proc fcmp
+outlib = mylib1.dataset1.packageMath;
+
+	function fibonacci(n);
+		a = 0;
+		b = 1;
+	/*do j =  1 to n;
+		c[i] = 1; */
+	/*array c{*} 1;*/
+		do i = 1 to n;
+			c = a + b;	
+			a = b;
+			b = c;
+	
+		end;
+		return(c);
+	endsub;
+	options cmplib=mylib1.dataset1;
+quit;
+
+
+data mylib1.fibonacci;
+	t = fibonacci(8);
+	put t=;
+	/*proc print t;*/
+run;
+
+
+
+
+/* All permutations */
+
+proc iml;
+	arr = {1 2 3 4};
+	perm = allperm(arr);
+	print perm;
+run;

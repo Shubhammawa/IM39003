@@ -1,0 +1,12 @@
+/* Problem 1 */
+proc iml;
+	arr = {10 3 6 8 9 4 3};
+	max = 0;
+	diff = 0;
+	do i = 1 to (ncol(arr)-1);
+		diff = abs(arr[i+1]-arr[i]);
+		if diff > max then
+			max = diff;
+	end;
+print max;
+run;

@@ -1,0 +1,31 @@
+/* Problem 2 */
+data vitals;
+	input ID Age Pulse SBP DBP;
+	datalines;
+	1 23 68 120 80
+	2 55 72 188 96
+	3 78 82 200 100
+	4 18 58 110 70
+	5 43 52 120 82
+	6 37 74 150 98
+	7 62 82 140 100
+	;
+run;
+
+data NewVitals;
+	set vitals;
+	PulseGroup = "X1";
+	SBPGroup = "X2";
+
+	if age<50 and Pulse < 70 then PulseGroup = "Low";
+	else if age<50 and Pulse >= 70 then PulseGroup = "High";
+	
+	if age<50 and SBP < 130	then SBPGroup = "Low";
+	else if age<50 and SBP >=130 then SBPGroup = "High";
+
+	if age>50 and Pulse < 74 then PulseGroup = "Low";
+	else if age>50 and Pulse>=74 then PulseGroup = "High";
+	
+	if age>50 and SBP < 140	then SBPGroup = "Low";
+	else if age >50 and SBP >=140 then SBPGroup = "High";
+run;

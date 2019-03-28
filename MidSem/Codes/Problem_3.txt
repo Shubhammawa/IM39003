@@ -1,0 +1,40 @@
+/* Problem 3 */
+data DataToSort;
+input arr1 arr2 arr3 arr4;
+datalines;
+8 3 22 15
+2 12 27 17
+5 23 3 11
+1 61 16 8
+7 7 13 4
+4 21 17 7
+3 13 9 9
+9 15 11 12
+12 17 13 21
+16 19 2 12
+run;
+
+
+proc fcmp
+	array x[10] rev1-rev12; 
+	function MySelectionSort(x);
+		do i = 1 to ncol(x);
+			do j = i to ncol(x);
+				if x[i] >= x[j] then
+					do;
+						temp = x[i];
+						x[i] = x[j];
+						x[j] = temp;
+					end;
+			end;
+		end;
+	endsub;
+quit;
+run;
+
+data SortedData;
+	set DataToSort;
+	do i = 1 to ncol(DataToSort);
+		MySelectionSort(DataToSort[i]);
+	end;
+run;

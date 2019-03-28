@@ -1,0 +1,147 @@
+mod
+question 1
+
+int Plants=...;
+int DC=...;
+
+range P=1..Plants;
+range D=1..DC;
+
+int plantcapacity[P]=...;
+int demands[D]=...;
+
+int c[P][D]=...;
+
+dvar float+ x[P][D];
+
+dexpr float TC=sum(i in P,j in D)c[i][j]*x[i][j];
+
+minimize TC;
+
+subject to{
+
+  Supply: forall(i in P)sum(j in D)x[i][j]<=plantcapacity[i];
+  demand: forall(j in D)sum(i in P)x[i][j]>=demands[j];
+   
+ }   
+ 
+
+data
+
+Plants=3;
+DC=2;
+
+plantcapacity=[1000,1500, 1200];
+demands=[2300,1400];
+c=[[50, 300],
+[100,250],
+[500, 125]];
+
+question 2
+data
+/*********************************************
+ * OPL 12.5 Data
+ * Author: user
+ * Creation Date: 31-Jan-2019 at 3:02:35 PM
+ *********************************************/
+SheetConnection mysheet ("C:\\Users\\user\\Desktop\\lab4excel.xlsx");
+ 
+ Plants from SheetRead(mysheet,"B3");
+ DC from SheetRead(mysheet,"B4");
+ 
+ plantcapacity from SheetRead(mysheet,"E9:E11");
+ demands from SheetRead(mysheet,"B13:C13");
+ 
+ c from SheetRead(mysheet,"B9:C11");
+ 
+ x to SheetWrite(mysheet,"G8:H10");
+
+mod
+int Plants=...;
+int DC=...;
+
+range P=1..Plants;
+range D=1..DC;
+
+int plantcapacity[P]=...;
+int demands[D]=...;
+
+int c[P][D]=...;
+
+dvar float+ x[P][D];
+
+dexpr float TC=sum(i in P,j in D)c[i][j]*x[i][j];
+
+minimize TC;
+
+subject to{
+
+  Supply: forall(i in P)sum(j in D)x[i][j]<=plantcapacity[i];
+  demand: forall(j in D)sum(i in P)x[i][j]>=demands[j];
+   
+ }   
+ 
+
+question 3
+ data
+/*********************************************
+ * OPL 12.5 Data
+ * Author: user
+ * Creation Date: 31-Jan-2019 at 3:51:31 PM
+ *********************************************/
+SheetConnection mysheet ("C:\\Users\\user\\Desktop\\LAB4_QUES2.xlsx");
+ 
+machines from SheetRead(mysheet,"C3");
+jobs from SheetRead(mysheet,"C4");
+
+ c from SheetRead(mysheet,"D7:H11");
+ 
+x to SheetWrite(mysheet,"J8:N12");
+
+mod
+/*********************************************
+ * OPL 12.5 Model
+ * Author: user
+ * Creation Date: 31-Jan-2019 at 3:51:31 PM
+ *********************************************/
+int machines=...;
+int jobs=...;
+
+range M=1..machines;
+range J=1..jobs;
+
+int c[J][M]=...;
+
+dvar float+ x[J][M];
+
+dexpr float TC=sum(i in M,j in J)c[i][j]*x[i][j];
+
+minimize TC;
+
+subject to{
+  
+  Supply: forall(i in M)sum(j in J)x[i][j]==1;
+  demand: forall(j in J)sum(i in M)x[i][j]==1;
+   
+ }   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

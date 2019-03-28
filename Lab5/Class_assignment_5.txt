@@ -1,0 +1,174 @@
+proc optmodel;
+/*
+set homes = {A,P}; 
+set cost = {5,3};
+
+var x{homes} >= 0;
+*/
+
+var p1 >=0;
+var p2 >=0;
+
+max P = (p1-5)*(100-60-2*p1) + (p2-3)*(150-3*p2);
+/*
+con c1: 5*(40 - 2*p1) + 3*(150 - 3*p2) <= 350;
+con c2: 15*(150 - 3*p2) = (40 - 2*p1);
+*/
+solve;
+print P p1 p2;
+
+proc optmodel;
+/*
+set homes = {A,P}; 
+set cost = {5,3};
+
+var x{homes} >= 0;
+*/
+
+var d1 >=0;
+var d2 >=0;
+
+max P = ((100-d1)/2-5)*(100-60-2*(100-d1)/2) + (p2-3)*(150-3*p2);
+/*
+con c1: 5*(40 - 2*p1) + 3*(150 - 3*p2) <= 350;
+con c2: 15*(150 - 3*p2) = (40 - 2*p1);
+*/
+solve;
+print P p1 p2;
+
+
+proc ga seed = 2 maxiter = 100;
+
+/*The objective function to be optimized */
+function contractor(selected[*]);
+	array d[2]/nosym;
+	
+	/*ReadMember reads the selected solution into an array
+	in a user objective function*/
+	call ReadMember(selected,1,d);
+	d1 = d[1];
+	d2 = d[2];
+	sum = ((40-d1)/2-5)*(d1) + ((150-d2)/3-3)*(d2);
+	penalty1 = 5*d1 + 3*d2 -350;
+	if(penalty1<=0) then penalty1 = 0;
+	penalty2 = abs(15*d2-d1);
+	put d1= d2= penalty1= penalty2=;
+	return(sum-penalty1*100-penalty2*100);
+endsub;
+
+call SetEncoding('I2');
+
+array LowerBound[2] /nosym (-10 -10);
+array UpperBound[2] /nosym (100 100);
+
+call SetBounds(LowerBound,Upperbound);
+
+call SetObjFunc('contractor',1);
+call SetCrossProb(0.8);
+call SetCross('twopoint');
+call SetMutProb(0.15);
+call SetMut('uniform','nchange',1);
+call SetSel('tournament','size',2);
+call SetElite(7);
+call Initialize('DEFAULT',120);
+run;
+quit;
+
+proc ga seed = 12 maxiter = 50;
+
+/*The objective function to be optimized */
+function contractor(selected[*]);
+	array p[2]/nosym;
+	
+	/*ReadMember reads the selected solution into an array
+	in a user objective function*/
+	call ReadMember(selected,1,p);
+	p1 = p[1];
+	p2 = p[2];
+	sum = ((40-d1)/2-5)*(40-2*(40-d1)/2) + ((150-d2)/3-3)*(150-3*(150-d2)/3);
+	return(sum);
+endsub;
+
+call SetEncoding('R2');
+
+array LowerBound[2] /nosym (-10 -10);
+array UpperBound[2] /nosym (100 100);
+
+call SetBounds(LowerBound,Upperbound);
+
+call SetObjFunc('contractor',1);
+call SetCrossProb(0.8);
+call SetCross('twopoint');
+call SetMutProb(0.15);
+call SetMut('uniform','nchange',1);
+call SetSel('tournament','size',2);
+call SetElite(7);
+call Initialize('DEFAULT',120);
+run;
+quit;
+
+data locations;
+	input x y;
+	datalines;
+	0.0333692 0.9925079
+
+0.6020896 0.0168807
+
+0.1532083 0.7020444
+
+0.3181124 0.1469288
+
+0.1878440 0.8679120
+
+0.9786112 0.4925364
+
+0.7918010 0.7943144
+
+0.5145329 0.0363478
+
+0.5500754 0.8324617
+
+0.3893757 0.6635483
+
+0.9641841 0.6400201
+
+0.7718126 0.5463923
+
+0.7549037 0.4584584
+
+0.2837881 0.7733415
+
+0.3308411 0.1974851
+
+0.7977221 0.1193149
+
+0.3221207 0.7930478
+
+0.9201035 0.1186234
+
+0.2397964 0.1448552
+
+0.3967470 0.6716172 
+;
+run;
+
+
+proc ga data1 = locations seed= 5554;
+	call SetEncoding('S20');
+	ncities =20;
+	array distances[20,20]/nosymbols;
+	do i = 1 to 20;
+		do j = 1 to i;
+			distances[i,j] = sqrt((x[i] - x[j])**2 + (y[i] - y[j])**2);
+		    distances[j,i] = distances[i,j];
+		end;
+	end;
+	call SetObj('TSP',0,'distances',distances);
+	call SetCross('Order');
+	call SetMut('Invert');
+	call SetMutProb(0.05);
+	call SetCrossProb(0.8);
+	call SetElite(1);
+	call Initialize('DEFAULT',200);
+	call ContinueFor(140);
+run;
